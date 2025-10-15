@@ -114,3 +114,30 @@ body {
     margin-bottom: 8px;
     cursor: grab;
 }
+
+.property-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.property-input label {
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.property-input input {
+    padding: 8px;
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: 4px;
+}
+
+.selected {
+    outline: 2px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+}
+
+.image-element {
+    max-width: 100%;
+    height: auto;
+}

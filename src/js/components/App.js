@@ -15,16 +15,28 @@ class App {
     }
 
     handleElementSelect(element) {
+        if (this.selectedElement) {
+            this.selectedElement.classList.remove('selected');
+        }
+
         this.selectedElement = element;
+
+        if (this.selectedElement) {
+            this.selectedElement.classList.add('selected');
+        }
+
         this.propertiesPanel.update(element);
     }
 
-    handleElementUpdate(element, property, value) {
-        // This function will be called by the properties panel
-        // For now, let's just log it.
-        console.log(`Updating ${property} of element to ${value}`);
-        if (element) {
-            element.textContent = value; // Example update
+    handleElementUpdate(element, property, value, isStyle) {
+        if (!element) return;
+
+        if (isStyle) {
+            // Append 'px' to font size
+            const finalValue = property === 'fontSize' ? `${value}px` : value;
+            element.style[property] = finalValue;
+        } else {
+            element[property] = value;
         }
     }
 

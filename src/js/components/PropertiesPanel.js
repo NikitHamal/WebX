@@ -4,52 +4,75 @@ class PropertiesPanel {
         this.selectedElement = null;
         this.panelElement = document.createElement('div');
         this.panelElement.classList.add('properties-panel');
-        this.panelElement.innerHTML = '<h2>Properties</h2>';
     }
 
     update(element) {
         this.selectedElement = element;
-        this.renderProperties();
+        this.render();
     }
 
-    renderProperties() {
-        // Clear previous properties
+    createPropertyInput(label, type, value, propertyName, styleProperty = false) {
+        const inputContainer = document.createElement('div');
+        inputContainer.classList.add('property-input');
+
+        const labelElement = document.createElement('label');
+        labelElement.textContent = label;
+        inputContainer.appendChild(labelElement);
+
+        const inputElement = document.createElement('input');
+        inputElement.type = type;
+        inputElement.value = value;
+
+        inputElement.addEventListener('input', (event) => {
+            const newValue = event.target.value;
+            this.onElementUpdate(this.selectedElement, propertyName, newValue, styleProperty);
+        });
+
+        inputContainer.appendChild(inputElement);
+        return inputContainer;
+    }
+
+    render() {
         this.panelElement.innerHTML = '<h2>Properties</h2>';
 
         if (!this.selectedElement) {
             this.panelElement.innerHTML += '<p>Select an element to edit its properties.</p>';
-            return;
+            return this.panelElement;
         }
 
-        // Example: Add a text input for the button's text content
-        const textLabel = document.createElement('label');
-        textLabel.textContent = 'Text: ';
-        const textInput = document.createElement('input');
-        textInput.type = 'text';
-        textInput.value = this.selectedElement.textContent;
-        textInput.addEventListener('input', (event) => {
-            this.onElementUpdate(this.selectedElement, 'textContent', event.target.value);
-        });
+        // Text Content
+        this.panelElement.appendChild(
+            this.createPropertyInput('Text', 'text', this.selectedElement.textContent, 'textContent')
+        );
 
-        this.panelElement.appendChild(textLabel);
-        this.panelElement.appendChild(textInput);
+        // Color
+        this.panelElement.appendChild(
+            this.createPropertyInput('Color', 'color', this.selectedElement.style.color, 'color', true)
+        );
 
-        // Add a delete button
+        // Font Size
+        this.panelElement.appendChild(
+            this.createPropertyInput('Font Size (px)', 'number', parseInt(this.selectedElement.style.fontSize) || 16, 'fontSize', true)
+        );
+
+        // Image Source (only for images)
+        if (this.selectedElement.tagName === 'IMG') {
+            this.panelElement.appendChild(
+                this.createPropertyInput('Image URL', 'text', this.selectedElement.src, 'src')
+            );
+        }
+
+        // Delete Button
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.classList.add('button', 'button--primary');
+        deleteButton.style.marginTop = '16px';
         deleteButton.addEventListener('click', () => {
-            if (this.selectedElement) {
-                this.selectedElement.remove();
-                this.update(null); // Clear the properties panel
-            }
+            this.selectedElement.remove();
+            this.update(null);
         });
-
         this.panelElement.appendChild(deleteButton);
-    }
 
-    render() {
-        this.renderProperties(); // Initial render
         return this.panelElement;
     }
 }

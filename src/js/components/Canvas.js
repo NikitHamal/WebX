@@ -1,5 +1,6 @@
 import Button from './Button.js';
 import TextBlock from './TextBlock.js';
+import Image from './Image.js';
 
 class Canvas {
     constructor(onElementSelect) {
@@ -21,7 +22,7 @@ class Canvas {
             event.preventDefault();
             const operation = event.dataTransfer.getData('text/plain');
 
-            if (operation === 'button' || operation === 'text-block') {
+            if (operation === 'button' || operation === 'text-block' || operation === 'image') {
                 this.addNewElement(canvasElement, operation);
             } else if (operation === 'move') {
                 const elementId = event.dataTransfer.getData('elementId');
@@ -42,6 +43,8 @@ class Canvas {
             });
         } else if (elementType === 'text-block') {
             newComponent = new TextBlock();
+        } else if (elementType === 'image') {
+            newComponent = new Image();
         }
 
         if (newComponent) {

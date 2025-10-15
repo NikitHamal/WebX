@@ -6,9 +6,11 @@ class Palette {
 
         const draggableButton = this.createDraggableElement('Button', 'button');
         const draggableTextBlock = this.createDraggableElement('Text', 'text-block');
+        const draggableImage = this.createDraggableElement('Image', 'image');
 
         paletteElement.appendChild(draggableButton);
         paletteElement.appendChild(draggableTextBlock);
+        paletteElement.appendChild(draggableImage);
 
         return paletteElement;
     }
