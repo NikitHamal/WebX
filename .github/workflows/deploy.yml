@@ -25,7 +25,8 @@ jobs:
           # If the src directory exists, copy it.
           if [ -d "src" ]; then
             cp -r src build/
-            sed -i 's/src\//\/src\//g' build/index.html
+            # Make paths relative for GitHub Pages deployment
+            sed -i 's/="\/src/="src/g' build/index.html
           fi
 
       - name: Upload artifact
